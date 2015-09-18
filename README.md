@@ -1,4 +1,5 @@
 # command
+```
     public class TestCommand : CommandBase
     {
         public string NotEmpty { get; set; }
@@ -21,8 +22,10 @@
             }
         }
     }
+```
 
 # Submit form (cshtml)
+```
 @using (Html.When(JqueryBind.Submit)
             .PreventDefault()
             .Submit()
@@ -32,13 +35,18 @@
             .AsHtmlAttributes()
             .ToBeginForm(Html, Url.Dispatcher().Push(new TestCommand())))
 {
-    @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) // work on client (also checking on server) because can translated by Fluent Validation
-    @Html.ForGroup(r => r.Must).TextBox(control => { control.Label.Name = "Value should not be 'Test'"; }) // work ONLY server side
-    @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; }) // work ONLY server side
+    // work on client (also checking on server) because can translated by Fluent Validation
+    @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) 
+    // work ONLY server side
+    @Html.ForGroup(r => r.Must).TextBox(control => { control.Label.Name = "Value should not be 'Test'"; }) 
+    // work ONLY server side
+    @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; }) 
     <input type="submit" value="Submit"/>
 }
+```
 
 # Submit form with html extensions
+```
 @using (Html.BeginPush(setting => { setting.OnSuccess = dsl => dsl.Utilities.Window.Alert("Success"); }))
 {
     @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) 
@@ -46,3 +54,4 @@
     @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; })
     <input type="submit" value="Submit"/>
 }
+```
