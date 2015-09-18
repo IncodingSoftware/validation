@@ -35,9 +35,12 @@
             .AsHtmlAttributes()
             .ToBeginForm(Html, Url.Dispatcher().Push(new TestCommand())))
 {
-    @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) // work on client (also checking on server) because can translated by Fluent Validation
-    @Html.ForGroup(r => r.Must).TextBox(control => { control.Label.Name = "Value should not be 'Test'"; }) // work ONLY server side
-    @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; }) // work ONLY server side
+    // work on client (also checking on server) because can translated by Fluent Validation
+    @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) 
+    // work ONLY server side
+    @Html.ForGroup(r => r.Must).TextBox(control => { control.Label.Name = "Value should not be 'Test'"; }) 
+    // work ONLY server side
+    @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; }) 
     <input type="submit" value="Submit"/>
 }
 ```
