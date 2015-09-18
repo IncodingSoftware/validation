@@ -1,0 +1,40 @@
+@using Incoding.MvcContrib
+@using Validator.UI
+@model TestCommand
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Head
+{
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.min.css")"/>
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-theme.min.css")"/>
+}
+<div class="container">
+    <div class="col-md-6 col-md-offset-4">
+        @using (Html.When(JqueryBind.Submit)
+                    .PreventDefault()
+                    .Submit()
+                    .OnBegin(dsl => dsl.Self().Core().Form.Validation.Parse())
+                    .OnSuccess(dsl => dsl.Utilities.Window.Alert("Success"))
+                    .OnError(dsl => dsl.Self().Core().Form.Validation.Refresh())
+                    .AsHtmlAttributes()
+                    .ToBeginForm(Html, Url.Dispatcher().Push(new TestCommand())))
+        {
+            @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) // work on client (also checking on server) because can translated by Fluent Validation
+            @Html.ForGroup(r => r.Must).TextBox(control => { control.Label.Name = "Value should not be 'Test'"; }) // work ONLY server side
+            @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; }) // work ONLY server side
+            <input type="submit" value="Submit"/>
+        }
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-6 col-md-offset-4">
+        @using (Html.BeginPush(setting => { setting.OnSuccess = dsl => dsl.Utilities.Window.Alert("Success"); }))
+        {
+            @Html.ForGroup(r => r.NotEmpty).TextBox(control => { control.Label.Name = "Not Empty"; }) 
+            @Html.ForGroup(r => r.Must).TextBox(control => { control.Label.Name = "Value should not be 'Test'"; })
+            @Html.ForGroup(r => r.ThrowFromCommand).TextBox(control => { control.Label.Name = "Throw form command"; })
+            <input type="submit" value="Submit"/>
+        }
+    </div>
+</div>
